@@ -33,14 +33,16 @@ function getBucketPathFromQuery(queryString) {
 }
 
 function bucketNodeInserted(e) {
-     var element = e.target;
-     if (element == null || !element.getAttribute) return;
+    var element = e.target;
+    if (element == null || !element.getAttribute) return;
 
-     if (element.getAttribute('bucket') == nextFolderName) {
+    element.scrollIntoView(true);
+
+    if (element.getAttribute('bucket') == nextFolderName) {
         var spanElement = element.getElementsByClassName('bucket-name')[0];
         asyncMouseClick(spanElement);
         setNextFolderName();
-     }
+    }
  }
 
 function objectNodeInserted(e) {
@@ -50,6 +52,8 @@ function objectNodeInserted(e) {
     var spanElement = element.getElementsByClassName('object-name-text')[0];
     if (spanElement == null) return;
 
+    spanElement.scrollIntoView(true);
+
     if (spanElement.innerHTML == nextFolderName) {
         asyncMouseClick(spanElement);
         setNextFolderName();
@@ -58,7 +62,7 @@ function objectNodeInserted(e) {
 
 function setNextFolderName() {
     nextFolderName = pathParts.shift();
-    if (nextFolderName == null) {
+    if (nextFolderName == null || nextFolderName == '') {
         console.log("Removing event listeners");
         document.getElementById("bucket-list-view").removeEventListener("DOMNodeInserted", bucketNodeInserted);
         document.getElementById("list-view").removeEventListener("DOMNodeInserted", objectNodeInserted);
